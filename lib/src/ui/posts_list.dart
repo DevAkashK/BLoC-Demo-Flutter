@@ -13,8 +13,16 @@ class PostsList extends StatelessWidget {
         stream: bloc.posts,
         builder: (context,AsyncSnapshot<List<Posts>>snapshot){
           if(snapshot.hasData){
-           // buildList(snapshot);
-            return Center(child: Text('Data is ${snapshot.data[1].body}'));
+            return Container(
+              child: ListView.builder(itemCount: snapshot.data.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context,int index){
+                final title=snapshot.data[index].title;
+                  return Card(child: ListTile(title:Text(title)));
+                })
+            );
+           // return Center(child: Text('Data is ${snapshot.data[1].body}'));
           }else if(snapshot.hasError){
         return Text(snapshot.error.toString());
           }
@@ -25,15 +33,6 @@ class PostsList extends StatelessWidget {
   }
 
   Widget buildList(AsyncSnapshot<List<Posts>>data){
-     return ListView.builder(
-         padding: const EdgeInsets.all(8),
-         itemCount: data.data.length,
-         itemBuilder: (BuildContext context, int index) {
-           return Container(
-             height: 50,
-             child: Center(child: Text('Entry ${data.data[index].title}')),
-           );
-         }
-     );
+
   }
 }
